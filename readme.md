@@ -40,6 +40,8 @@ Website/Application Color Palette : `#1C1678`
                                     `#8576FF`
                                     `#7BC9FF`
                                     `#A3FFD6`
+                                    `#FFFFFF`
+                                    
 
 #
 #
