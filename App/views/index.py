@@ -25,6 +25,7 @@ def index_page():
         url = base_url + part
         querystring = {"limit": "20"}
         response = requests.get(url, headers=headers, params=querystring)
+        
 
 
 
