@@ -8,7 +8,7 @@ class Routine(db.Model):
     routine_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship("User", back_populates="routines")
-    custom_name = db.Column(db.String(120), nullable=True)
+    custom_name = db.Column(db.String(120), nullable=True, unique=True)
     exercises = db.relationship("Exercise", secondary=routine_exercise, lazy='joined')
     
     def __init__(self, name, user_id):
