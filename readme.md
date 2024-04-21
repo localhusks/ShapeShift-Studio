@@ -36,11 +36,13 @@ Background Colors in order of lightness:  `#121212`
                                           `#282828`
                                           `#323232`
 
-Website/Application Color Palette : `#1C1678`
-                                    `#8576FF`
-                                    `#7BC9FF`
-                                    `#A3FFD6`
+Website/Application Color Palette : `#D56059` 
+                                    `#591F1A` 
+                                    `#9D9592` 
+                                    `#AB8DA2` 
+                                    `#141A38`
                                     `#FFFFFF`
+
                                     
 
 #
