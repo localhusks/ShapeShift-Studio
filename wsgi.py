@@ -17,6 +17,7 @@ def initialize():
     db.drop_all()
     db.create_all()
     create_user('bob', 'bobpass')
+    
     print('database intialized')
 
 '''
@@ -65,5 +66,23 @@ def user_tests_command(type):
     else:
         sys.exit(pytest.main(["-k", "App"]))
     
+@test.command("exercise", help="Run Exercise tests")
+@click.argument("type", default="all")
+def user_tests_command(type):
+    if type == "unit":
+        sys.exit(pytest.main(["-k", "ExerciseUnitTests"]))
+    elif type == "int":
+        sys.exit(pytest.main(["-k", "ExerciseIntegrationTests"]))
+    else:
+        sys.exit(pytest.main(["-k", "App"]))
 
+@test.command("routine", help="Run Routine tests")
+@click.argument("type", default="all")
+def user_tests_command(type):
+    if type == "unit":
+        sys.exit(pytest.main(["-k", "RoutineUnitTests"]))
+    elif type == "int":
+        sys.exit(pytest.main(["-k", "RoutineIntegrationTests"]))
+    else:
+        sys.exit(pytest.main(["-k", "App"]))
 app.cli.add_command(test)
