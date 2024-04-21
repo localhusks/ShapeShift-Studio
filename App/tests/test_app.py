@@ -3,7 +3,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from App.main import create_app
 from App.database import db, create_db
-from App.models import User
+from App.models import User, Exercise, Routine
 from App.controllers import (
     create_user,
     get_all_users_json,
@@ -22,26 +22,130 @@ LOGGER = logging.getLogger(__name__)
 class UserUnitTests(unittest.TestCase):
 
     def test_new_user(self):
-        user = User("bob", "bobpass")
+        user = User(
+            username="bob", 
+            password="bobpass", 
+            email="bobemail"
+            )
         assert user.username == "bob"
 
     # pure function no side effects or integrations called
-    def test_get_json(self):
-        user = User("bob", "bobpass")
-        user_json = user.get_json()
-        self.assertDictEqual(user_json, {"id":None, "username":"bob"})
+    def test_to_json(self):
+        user = User("bob", "bobpass", "bobemail")
+        user_json = user.to_json()
+        self.assertDictEqual(user_json, {
+            "id":None, 
+            "username":"bob", 
+            "email":"bobemail"
+            })
     
     def test_hashed_password(self):
         password = "mypass"
-        hashed = generate_password_hash(password, method='sha256')
-        user = User("bob", password)
+        user = User("bob", password, "bobemail")
         assert user.password != password
 
     def test_check_password(self):
         password = "mypass"
-        user = User("bob", password)
+        user = User("bob", password, "bobemail")
         assert user.check_password(password)
 
+class ExerciseUnitTests(unittest.TestCase):
+    def test_create_exercise(self):
+        exercise = Exercise(
+            name="body weight squats",
+            body_area= "lower",
+            equip="body weight",
+            muscle = "thighs"
+        )
+        assert exercise.name == "body weight squats"
+    
+    def test_to_json(self):
+        exercise = Exercise(
+            name="body weight squats",
+            body_area= "lower",
+            equip="body weight",
+            muscle = "thighs"
+        )
+        exercise_json = exercise.to_json()
+        self.assertDictEqual(exercise_json,{
+            'exercise_id' : None,
+            'name':"body weight squats",
+            'targeted_muscle':"thighs",
+            'equipment':"body weight",
+            'body_part':"lower"
+        })
+
+class RoutineUnitTests(unittest.TestCase):
+    def test_create_routine_no_custom(self):
+        
+        no_custom_routine = Routine(
+            name = None,
+            user_id=None
+        )
+        assert no_custom_routine.custom_name == "routine None:None"
+
+    def test_create_routine_custom_name(self):
+        
+        custom_name_routine = Routine(
+            name = "testing name",
+            user_id=None
+        )
+        assert custom_name_routine.custom_name == "testing name"
+
+    def test_add_exercise(self):
+        exercise = Exercise(
+            name="body weight squats",
+            body_area= "lower",
+            equip="body weight",
+            muscle = "thighs"
+        )
+        routine = Routine(
+            name = "testing add exercise",
+            user_id=None
+        )
+        routine.add_exercise(exercise=exercise)
+        self.assertIn(exercise, routine.exercises)
+
+    def test_remove_exercise(self):
+        exercise = Exercise(
+            name="body weight squats",
+            body_area= "lower",
+            equip="body weight",
+            muscle = "thighs"
+        )
+        routine = Routine(
+            name = "testing remove exercise",
+            user_id=None
+        )
+        routine.add_exercise(exercise=exercise)
+        routine.remove_exercise(exercise=exercise)
+        self.assertNotIn(exercise, routine.exercises)
+
+    def test_to_json(self):
+        exercise = Exercise(
+            name="body weight squats",
+            body_area= "lower",
+            equip="body weight",
+            muscle = "thighs"
+        )
+        routine = Routine(
+            name = "testing to json",
+            user_id=None
+        )
+        routine.add_exercise(exercise=exercise)
+        routine_json = routine.to_json()
+        self.assertDictEqual(routine_json,{
+            'routine_id': None,
+            'user_id': None,
+            'exercises': [{
+                'exercise_id' : None,
+            'name':"body weight squats",
+            'targeted_muscle':"thighs",
+            'equipment':"body weight",
+            'body_part':"lower"
+            }],
+            'custom_name': "testing to json"
+        })
 '''
     Integration Tests
 '''
