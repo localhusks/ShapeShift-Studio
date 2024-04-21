@@ -1,13 +1,93 @@
 {% extends "layout.html" %}
-{% block title %}Flask MVC App{% endblock %}
+{% block title %}Shape-Shift Studio{% endblock %}
 {% block page %}Flask MVC App{% endblock %}
 
 {{ super() }}
 
+{% block nav %}
+
+    <nav class="navbar" style="background-color: #212121; height: 75px; width: 100%;">
+        <div class="nav-wrapper">
+            <ul id="nav-mobile" class="left">
+                <li>
+                <a href="/">
+                    <img 
+                    src="https://cdn.discordapp.com/attachments/1158490739169308753/1231597830456742050/Shape-Shift_Studio_Logo.png?ex=663789dc&is=662514dc&hm=c87e06a9a5f93ea929d0b1b737fec33243ccbe5efe5e638447571152da0766bf&"
+                    alt="Logo"
+                    style="
+                        display: flex;
+                        width: 100%;
+                        height: 60px;
+                        margin: 0.5vw;
+                    "
+                    >
+                </a>
+                </li>
+            </ul>
+            <!-- 
+            {% if is_authenticated %}
+            <ul id="nav-mobile" class="right">
+            <li><a href="/logout">Logout</a></li>
+            </ul>
+            {% else %}
+            <form class="right navbar-form" method="POST" action="/login" style="display: flex; flex-wrap: nowrap; align-items: center; margin-right: 10px;">
+                <div class="input-field" style="margin-right: 10px;">
+                    <input placeholder="username" value="bob" name="username" type="text" class="validate" required>
+                    <label for="username">username</label>
+                </div>
+                <div class="input-field" style="margin-right: 10px;">
+                    <input placeholder="password"value="bobpass" name="password" type="password" class="validate" required>
+                    <label for="password">Password</label>
+                </div>
+                <button type="submit" class="btn waves-effect waves-light">Login</button>
+            </form>
+            {% endif %}
+            -->
+            
+        </div>
+    </nav>
+
+{% endblock %}
+
 {% block content %}
-    <h1>Flask MVC</h1>
-    {% if is_authenticated %}
-        <p> Welcome {{current_user.username}} </p>
-    {% endif %}
-    <p>This is a boileplate flask application which follows the MVC pattern for structuring the project.</p>
+    <div style=
+        "
+            display: flex;
+            flex-direction: row;
+            width: 100vw;
+            height: 80vh;
+            margin: 0;
+        "
+    >
+
+        <div class="card" 
+            style=
+            "
+                width: 80%;
+                margin: 1%;
+                border-radius: 30px;
+                background: #181818;
+            "
+        >
+
+        <!-- Put Workout List Here -->
+
+        </div>
+
+        <div class="card" 
+            style=
+            "
+                width: 20%;
+                margin: 1%;
+                border-radius: 30px;
+                background: #181818;
+            "
+        >
+
+        <!-- Put Routine List Here -->
+
+        </div>
+    
+    </div>
+
 {% endblock %}
