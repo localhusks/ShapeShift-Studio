@@ -20,7 +20,7 @@ An application for planning workout routines with the ability to remix them with
 ### Home Page
 ![Home Page](https://github.com/localhusks/Shape-Shift-Studio/blob/main/WireFrames/HomePage/HomePage.png)
 
-# Color Pallet
+# Color Palette
 
 Logo Text Color: `#D4626E`
 
@@ -35,6 +35,11 @@ Background Colors in order of lightness:  `#121212`
                                           `#212121`
                                           `#282828`
                                           `#323232`
+
+Website/Application Color Palette : `#1C1678`
+                                    `#8576FF`
+                                    `#7BC9FF`
+                                    `#A3FFD6`
 
 #
 #
