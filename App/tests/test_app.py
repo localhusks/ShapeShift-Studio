@@ -1,16 +1,34 @@
 import os, tempfile, pytest, logging, unittest
 from werkzeug.security import check_password_hash, generate_password_hash
 
+from App.controllers.routine import get_routine
 from App.main import create_app
 from App.database import db, create_db
-from App.models import User, Exercise, Routine
+from App.models import User, Exercise, Routine, exercise, routine
 from App.controllers import (
     create_user,
     get_all_users_json,
     login,
     get_user,
     get_user_by_username,
-    update_user
+    update_user,
+    add_routine_to_user,
+    remove_routine_from_user,
+    create_exercise,
+    get_exercise,
+    get_all_exercises_json,
+    get_all_exercises_by_body_part,
+    get_all_exercises_by_target_muscle,
+    get_all_exercises_by_equipment,
+    create_routine,
+    get_routine,
+    get_routine_by_name,
+    get_all_routines_for_user_json,
+    delete_routine,
+    add_exercise_to_routine,
+    remove_exercise_from_routine,
+
+
 )
 
 
@@ -185,14 +203,224 @@ class UsersIntegrationTests(unittest.TestCase):
         user = create_user("rick", "bobpass")
         assert user.username == "rick"
 
+    def test_get_user(self):
+        user = get_user(1)
+        assert user.username == "bob"
+
+    def test_get_user_by_username(self):
+        user =  get_user_by_username("bob")
+        assert user.id == 1
+
     def test_get_all_users_json(self):
+
         users_json = get_all_users_json()
-        self.assertListEqual([{"id":1, "username":"bob"}, {"id":2, "username":"rick"}], users_json)
+        self.assertListEqual([
+            {
+                "id":1, 
+                "username":"bob",
+                "routines" : []
+            }, 
+            {
+                "id":2, 
+                "username":"rick",
+                "routines" : []
+            }
+            ], users_json)
 
     # Tests data changes in the database
     def test_update_user(self):
         update_user(1, "ronnie")
         user = get_user(1)
         assert user.username == "ronnie"
+
+    # def test_add_routine(self):
+    #     #adding routine to bob
+    #     user = get_user_by_username("bob")
+    #     routine = 
+    #     add_routine_to_user(user.id, )
+
+    # def test_remove_routine(self):
+    #     #adding routine to bob
+    #     user = get_user_by_username("bob")
+    #     routine = 
+    #     add_routine_to_user(user.id, )
+
+class ExerciseIntegrationTests(unittest.TestCase):
+    def test_create_exercise(self):
+        exercise = create_exercise(
+            name="body weight squats",
+            bodyPart= "lower",
+            equipment="body weight",
+            target_muscle = "thighs"
+        )
+        assert exercise.name == "body weight squats"
+    def test_get_exercies(self):
+        exercise = get_exercise(1)
+        assert exercise.name == "body weight squats"
+    def test_get_all_exercises(self):
+        exercise_2 = create_exercise(
+            name="plank",
+            bodyPart= "waist",
+            equipment="body weight",
+            target_muscle = "abdominals"
+        )
         
+        exercises_json = get_all_exercises_json()
+        self.assertListEqual(
+            [
+                {
+                    'exercise_id' : 1,
+                    'name':"body weight squats",
+                    'targeted_muscle':"thighs",
+                    'equipment':"body weight",
+                    'body_part':"lower"
+                },
+                {
+                    'exercise_id' : 2,
+                    'name':"plank",
+                    'targeted_muscle':"abdominals",
+                    'equipment':"body weight",
+                    'body_part':"waist"
+                }
+            ],
+            exercises_json
+        )   
+
+    def test_get_exercises_by_body(self):
+        filtered = get_all_exercises_by_body_part("waist")
+        self.assertListEqual(filtered,[{
+                    'exercise_id' : 2,
+                    'name':"plank",
+                    'targeted_muscle':"abdominals",
+                    'equipment':"body weight",
+                    'body_part':"waist"
+                }
+            ]
+        )
+    def test_get_exercises_target_muscle(self):
+        filtered = get_all_exercises_by_target_muscle("thighs")
+        self.assertListEqual(filtered,[{
+                    'exercise_id' : 1,
+                    'name':"body weight squats",
+                    'targeted_muscle':"thighs",
+                    'equipment':"body weight",
+                    'body_part':"lower"
+                }
+            ]
+        )
+    def test_get_exercises_equipment(self):
+        filtered = get_all_exercises_by_equipment("body weight")
+        self.assertListEqual(filtered,[
+            {
+                'exercise_id' : 1,
+                'name':"body weight squats",
+                'targeted_muscle':"thighs",
+                'equipment':"body weight",
+                'body_part':"lower"
+            },
+            {
+                'exercise_id' : 2,
+                'name':"plank",
+                'targeted_muscle':"abdominals",
+                'equipment':"body weight",
+                'body_part':"waist"
+            }
+            ]
+        )
+
+class RoutineIntegrationTests(unittest.TestCase):     
+    def test_create_routine(self):
+        user = create_user("maki","zenin")
+        routine = create_routine("maki's workout",user.id)
+        self.assertListEqual(user.routines, [routine]) and routine.custom_name == "maki's workout"
+
+    def test_get_routine_by_name(self):
+        routine = get_routine_by_name("maki's workout")
+        user = get_user_by_username("maki")
+        assert routine.user_id == user.id
+
+    def test_get_all_routines_for_user(self):
+        maki_user = get_user_by_username("maki")
+        new_routine = create_routine("cardio",maki_user.id)
+        routines = get_all_routines_for_user_json(maki_user.id)
+        self.assertListEqual([
+            {
+                'routine_id': 1,
+                'user_id' : maki_user.id,
+                'exercises': [],
+                'custom_name': "maki's workout"
+            },
+            {
+                'routine_id': 2,
+                'user_id' : maki_user.id,
+                'exercises': [],
+                'custom_name': "cardio"
+            }
+        ],routines)
+
+    def test_routine_new_exercise(self):
+        routine = get_routine_by_name("maki's workout")
+        exercise = create_exercise(
+            name="Barbell Curls",
+            bodyPart= "arms",
+            equipment="50kg Barbell",
+            target_muscle = "biceps"
+        )
+        add_exercise_to_routine(
+            exercise_id=exercise.exercise_id,
+            routine_id=routine.routine_id
+        )
+        self.assertIn(exercise,routine.exercises)
+        
+   
+    def test_ryoutines_all(self):
+        routine = get_routine_by_name("cardio")
+        maki_user = get_user_by_username("maki")
+        exercise = create_exercise(
+            name="Burpees",
+            bodyPart= "core",
+            equipment="body weight",
+            target_muscle = "abdominals"
+        )
+        add_exercise_to_routine(
+            exercise_id=exercise.exercise_id,
+            routine_id=routine.routine_id
+        )
+        routines = get_all_routines_for_user_json(maki_user.id)
+        self.assertListEqual([
+            {
+                'routine_id': 1,
+                'user_id' : maki_user.id,
+                'exercises': [],
+                'custom_name': "maki's workout"
+            },
+            {
+                'routine_id': 2,
+                'user_id' : maki_user.id,
+                'exercises': [{
+                    'exercise_id' : exercise.exercise_id,
+                    'name' : "Burpees",
+                    'targeted_muscle':"abdominals",
+                    'equipment':"body weight",
+                    'body_part':"core"
+
+                }],
+                'custom_name': "cardio"
+            }
+        ],routines)
+    def test_routine_rem_exercise(self):
+        routine = get_routine_by_name("maki's workout")
+        exercise = routine.exercises[-1]
+        remove_exercise_from_routine(
+            exercise_id=exercise.exercise_id,
+            routine_id=routine.routine_id
+        )
+        self.assertNotIn(exercise,routine.exercises)
+
+    def test_rzemove_routine(self):
+        routine = get_routine_by_name("maki's workout")
+        delete_routine(routine.routine_id)
+        user = get_user_by_username("maki")
+        routines = get_all_routines_for_user_json(user.id)
+        self.assertNotIn(routine.to_json(),routines)
 
