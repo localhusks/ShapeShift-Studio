@@ -24,29 +24,44 @@ class UserUnitTests(unittest.TestCase):
     def test_new_user(self):
         user = User(
             username="bob", 
-            password="bobpass", 
-            email="bobemail"
+            password="bobpass"
             )
         assert user.username == "bob"
+    def test_add_routine(self):
+        routine = Routine(
+            name = None,
+            user_id=None
+        )
+        user = User("bob", "bobpass")
+        user.add_routine(routine)
+        self.assertIn(routine,user.routines)
+    def test_remove_routine(self):
+        routine = Routine(
+            name = None,
+            user_id=None
+        )
+        user = User("bob", "bobpass")
+        user.add_routine(routine=routine)
+        user.remove_routine(routine=routine)
+        self.assertNotIn(routine,user.routines)
 
-    # pure function no side effects or integrations called
     def test_to_json(self):
-        user = User("bob", "bobpass", "bobemail")
+        user = User("bob", "bobpass")
         user_json = user.to_json()
         self.assertDictEqual(user_json, {
             "id":None, 
-            "username":"bob", 
-            "email":"bobemail"
+            "username":"bob",
+            "routines" : []
             })
     
     def test_hashed_password(self):
         password = "mypass"
-        user = User("bob", password, "bobemail")
+        user = User("bob", password)
         assert user.password != password
 
     def test_check_password(self):
         password = "mypass"
-        user = User("bob", password, "bobemail")
+        user = User("bob", password)
         assert user.check_password(password)
 
 class ExerciseUnitTests(unittest.TestCase):
