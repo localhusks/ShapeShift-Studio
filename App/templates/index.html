@@ -99,26 +99,35 @@
         >
 
             <!-- Put Routine List Here -->
-            <!-- Add Routine Button (Fixed Position) -->
-            <div style="position: sticky; top: 0; background-color: #181818; padding: 10px; z-index: 1; display: flex; justify-content: center;">
-                <button type="button" class="btn btn-primary">Add Routine</button>
+            <div style="padding: 10px;">
+                <select id="routineDropdown" class="form-select" aria-label="Select Routine">
+                    <option value="" selected disabled>Select Routine</option>
+                    <!-- Replace the options below with actual routine data using Jinja -->
+                    <option value="routine1">Routine 1</option>
+                    <option value="routine2">Routine 2</option>
+                    <option value="routine3">Routine 3</option>
+                    <!-- Add more options as needed -->
+                </select>
             </div>
-            
-            <!-- Vertical Scrollable List of Routine Cards -->
+        
+            <!-- Vertical Scrollable List of Exercise Cards -->
             <div style="max-height: 400px; overflow-y: auto;">
-                <!-- Example Routine Card (Replace with actual routine data using Jinja) -->
+                <!-- Example Exercise Card (Replace with actual exercise data using Jinja) -->
                 <a href="#" class="card-link">
                     <div class="card-content" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border: 2px solid white;">
-                        <span class="card-title" style="color: white;">Routine 1</span>
-                        <div style="display: flex; gap: 10px;">
-                            <button type="button" class="btn btn-warning">Edit</button>
-                            <button type="button" class="btn btn-danger" style="background-color: #FF6347; display: flex; justify-content: center; align-items: center;">
-                                <img src="https://img.icons8.com/ios/50/000000/trash.png" style="width: 15px; height: 15px;" alt="Trash Can Icon">
-                            </button>
-                        </div>
+                        <span class="card-title" style="color: white;">Exercise 1</span>
+                        <button type="button" class="btn btn-danger" style="background-color: #FF6347;">
+                            <img src="https://img.icons8.com/ios/50/000000/trash.png" style="width: 15px; height: 15px;" alt="Trash Can Icon">
+                        </button>
                     </div>
                 </a>
-                <!-- Repeat the above card structure for each routine -->
+                
+                <!-- Repeat the above card structure for each exercise -->
+            </div>
+        
+            <!-- Sticky Add Routine Button -->
+            <div style="position: sticky; bottom: 0; background-color: #181818; padding: 10px; z-index: 1; display: flex; justify-content: center;">
+                <button type="button" class="btn btn-primary">Add Routine</button>
             </div>
 
 
