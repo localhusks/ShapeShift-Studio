@@ -3,6 +3,33 @@
 
 {{ super() }}
 
+{% block style %}
+
+<style>
+
+    button {
+        font-family: monospace;
+        font-size: 1rem;
+        color: #FAFAFA;
+        text-transform: uppercase;
+        padding: 5px 10px;
+        border-radius: 10px;
+        border: 2px solid #FAFAFA;
+        background: #252525;
+        box-shadow: 3px 3px #fafafa;
+        cursor: pointer;
+        margin: 10px 0;
+    }
+
+    button:active {
+        box-shadow: none;
+        transform: translate(3px, 3px);
+    }
+
+</style>
+
+{% endblock %}
+
 {% block nav %}
 
     <nav class="navbar" style="background-color: #212121; height: 75px; width: 100%;">
@@ -21,6 +48,13 @@
                     "
                     >
                 </a>
+                </li>
+                <li>
+                    <a href="/logout">
+                        <button type="submit">
+                            Logout
+                        </button>
+                    </a>
                 </li>
             </ul>
             <!-- 
@@ -72,10 +106,10 @@
         
             <!--Buttons for Filtering by body type-->
             <div class="filter-buttons" style="padding: 10px; display: flex; gap: 10px;">
-                <button type="button" class="btn btn-outline-primary" onclick="filterExercises('all')" style="background-color: #D56059;">All</button>
-                <button type="button" class="btn btn-outline-primary" onclick="filterExercises('upper')" style="background-color: #D56059;">Upper Body</button>
-                <button type="button" class="btn btn-outline-primary" onclick="filterExercises('lower')"style="background-color: #D56059;">Lower Body</button>
-                <button type="button" class="btn btn-outline-primary" onclick="filterExercises('core')"style="background-color: #D56059;">Core</button>
+                <button type="button" onclick="filterExercises('all')" style="background-color: #D56059; font-size: 1rem;">All</button>
+                <button type="button" onclick="filterExercises('upper')" style="background-color: #D56059; font-size: 1rem;">Upper Body</button>
+                <button type="button" onclick="filterExercises('lower')"style="background-color: #D56059; font-size: 1rem;">Lower Body</button>
+                <button type="button" onclick="filterExercises('core')"style="background-color: #D56059; font-size: 1rem;">Core</button>
             </div>
         
             <!-- Put Workout List Here -->
