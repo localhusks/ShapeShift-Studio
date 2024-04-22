@@ -74,7 +74,3 @@ def signup_action():
     return response
 
 
-# @auth_views.route('/app', methods=['GET'])
-# @jwt_required()
-# def home_page():
-#     return render_template('index.html')

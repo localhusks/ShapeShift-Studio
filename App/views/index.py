@@ -4,7 +4,7 @@ from App.models import db
 from App.controllers import create_user
 from App.controllers.exercise import (create_exercise)
 import requests
-
+import json
 index_views = Blueprint('index_views', __name__, template_folder='../templates')
 from flask_jwt_extended import (
     JWTManager,
@@ -15,7 +15,7 @@ from flask_jwt_extended import (
     current_user
 )
 def extract_elements(data):
-    keys_to_extract = ['bodyPart', 'equipment', 'name', 'target']
+    keys_to_extract = ['difficulty', 'equipment', 'name', 'target']
     extracted_elements = [{key: exercise[key] for key in keys_to_extract} for exercise in data]
     return extracted_elements
 
@@ -31,30 +31,30 @@ def init():
     db.drop_all()
     db.create_all()
     create_user('bob', 'bobpass')
-    base_url = "https://exercisedb.p.rapidapi.com/exercises/bodyPart/"
-    body_parts = [
-        "back", "cardio", "chest", "lower arms", "lower legs",
-        "neck", "shoulders", "upper arms", "upper legs", "waist"
-    ]
-    headers = {
-        "X-RapidAPI-Key": "47e884c7f2msh0b51f7d588382d1p1de9dajsn5547acf5ba79",
-        "X-RapidAPI-Host": "exercisedb.p.rapidapi.com"
-    }
+    base_url = "https://api.api-ninjas.com/v1/exercises"
+    headers={'X-Api-Key': 'p7qwwiLPwaRqMsHglv/zOA==IHNYDMBP2qd3rItm'}
+    
 
-    querystring = {"limit":"10"}
+    url = base_url
+    response = requests.get(url, headers=headers)
+    if response.status_code == requests.codes.ok:
+        exercises_data = json.loads(response.text)
+    for exercise_data in exercises_data:
 
-    for part in body_parts:
-        url = base_url + part
-        response = requests.get(url, headers=headers, params=querystring)
-        exercises_data = response.json()
-        extracted_data = extract_elements(exercises_data)
-        for exercise in extracted_data:
-            create_exercise(
-                name=exercise['name'],
-                target_muscle= exercise['target'], 
-                bodyPart=exercise['bodyPart'], 
-                equipment=exercise['equipment']
-                )
+        name = exercise_data["name"]
+        difficulty = exercise_data["difficulty"]
+        muscle = exercise_data["muscle"]
+        equipment = exercise_data["equipment"]
+
+        try:
+            exercise = create_exercise(name, muscle, difficulty, equipment)
+            if exercise:
+                print(f"Exercise '{name}' created successfully.")
+            else:
+                print(f"Failed to create exercise '{name}'.")
+        except Exception as e:
+            print('Error in creating Exercise:', e)
+
     return jsonify(message='db initialized!')
 
 @index_views.route('/health', methods=['GET'])
