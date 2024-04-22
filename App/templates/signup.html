@@ -197,16 +197,16 @@
         <p>Login</p>
         <form  method="POST" action="/signup">
             <div class="user-box">
-                <input required="" name="" type="text">
+                <input value="bob" name="username" type="text" class="validate" required>
                 <label>Username</label>
             </div>
             <div class="user-box">
-                <input required="" name="" type="password">
+                <input value="bobpass" name="password" type="password" class="validate" required>
                 <label>Password</label>
             </div>
             <div>
                 <div>
-                    <input type="submit" class="blue text-white btn" value="Sign up">
+                    <button type="submit" class="btn waves-effect waves-light">Sign Up</button>
                 </div>
                 <div>
                     <a href="/login" class="a2">Login Here!</a>
