@@ -142,46 +142,39 @@
             "
         >
 
+            <!-- Sticky Add Routine Button -->
+            <div style="position: sticky; bottom: 0; background-color: #181818; padding: 10px; z-index: 1; display: flex; justify-content: center;">
+                <button type="button">Add Routine</button>
+            </div>
             <!-- Put Routine List Here -->
             <div style="padding: 10px;">
                 <div style="padding: 10px;">
-                <select id="routineDropdown" class="form-select" disabled style="color: white;" aria-label="Select Routine">
-                    <option value="" disabled style="color: white;" selected disabled >Select Routine</option>
-                    <!--Create a for loop that goes through and displays each routine for a user-->
-                        <option value="routine1">Routine 1</option>
-                        <option value="routine2">Routine 2</option>
-                        <option value="routine3">Routine 3</option>
-                    <!-- End for Loop -->
-                </select>
-            </div>
-                    <!--Create a for loop that goes through and displays each routine for a user-->
-                    <option value="routine1">Routine 1</option>
-                    <option value="routine2">Routine 2</option>
-                    <option value="routine3">Routine 3</option>
-                    <!-- End for Loop -->
-                </select>
+                    <select id="routineDropdown" class="form-select" disabled style="color: white;" aria-label="Select Routine">
+                        <option value="" disabled style="color: white;" selected disabled >Select Routine</option>
+                        <!--Create a for loop that goes through and displays each routine for a user-->
+                            <option value="routine1">Routine 1</option>
+                            <option value="routine2">Routine 2</option>
+                            <option value="routine3">Routine 3</option>
+                        <!-- End for Loop -->
+                    </select>
+                </div>
             </div>
         
             <!-- Vertical Scrollable List of Exercise Cards -->
             <div style="max-height: 400px; overflow-y: auto;">
-
-                <!-- For loop that displays each excercise in a routine for a specific user-->
-                <a href="#" class="card-link">
-                    <div class="card-content" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border: 2px solid white;">
-                        <span class="card-title" style="color: white;">Exercise 1</span>
-                        <button type="button" style="background-color: #FF6347;">
-                            <img src="https://img.icons8.com/ios/50/000000/trash.png" style="width: 15px; height: 15px;" alt="Trash Can Icon">
-                        </button>
-                    </div>
-                </a>
                 
+                {% for exercise in routine %}
+                <!-- For loop that displays each excercise in a routine for a specific user-->
+                    <a href="#" class="card-link">
+                        <div class="card-content" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border: 2px solid white;">
+                            <span class="card-title" style="color: white;">exercise.name</span>
+                            <button type="button" style="background-color: #FF6347;">
+                                <img src="https://img.icons8.com/ios/50/000000/trash.png" style="width: 15px; height: 15px;" alt="Trash Can Icon">
+                            </button>
+                        </div>
+                    </a>
+                {% endfor %}
                 <!--End for loop -->
-            </div>
-            
-        
-            <!-- Sticky Add Routine Button -->
-            <div style="position: sticky; bottom: 0; background-color: #181818; padding: 10px; z-index: 1; display: flex; justify-content: center;">
-                <button type="button">Add Routine</button>
             </div>
 
 
