@@ -3,6 +3,33 @@
 
 {{ super() }}
 
+{% block style %}
+
+<style>
+
+    button {
+        font-family: monospace;
+        font-size: 1rem;
+        color: #FAFAFA;
+        text-transform: uppercase;
+        padding: 5px 10px;
+        border-radius: 10px;
+        border: 2px solid #FAFAFA;
+        background: #252525;
+        box-shadow: 3px 3px #fafafa;
+        cursor: pointer;
+        margin: 10px 0;
+    }
+
+    button:active {
+        box-shadow: none;
+        transform: translate(3px, 3px);
+    }
+
+</style>
+
+{% endblock %}
+
 {% block nav %}
 
     <nav class="navbar" style="background-color: #212121; height: 75px; width: 100%;">
@@ -21,6 +48,13 @@
                     "
                     >
                 </a>
+                </li>
+                <li>
+                    <a href="/logout">
+                        <button type="submit">
+                            Logout
+                        </button>
+                    </a>
                 </li>
             </ul>
             <!-- 
@@ -68,11 +102,21 @@
                 background: #181818;
             "
         >
+            
+        
+            <!--Buttons for Filtering by body type-->
+            <div class="filter-buttons" style="padding: 10px; display: flex; gap: 10px;">
+                <button type="button" onclick="filterExercises('all')" style="background-color: #D56059; font-size: 1rem;">All</button>
+                <button type="button" onclick="filterExercises('upper')" style="background-color: #D56059; font-size: 1rem;">Upper Body</button>
+                <button type="button" onclick="filterExercises('lower')"style="background-color: #D56059; font-size: 1rem;">Lower Body</button>
+                <button type="button" onclick="filterExercises('core')"style="background-color: #D56059; font-size: 1rem;">Core</button>
+            </div>
+        
+            <!-- Put Workout List Here -->
+            <div class="row" id="exerciseList">
 
-        <!-- Put Workout List Here -->
-            <div class="row">
-            <!-- Create For loop around this for each exercise -->
-                <div class="col s2 m2">
+                <!-- Create For loop around this for each exercise -->
+                <div class="col s2 m2" data-category="upper">
                     <div class="card" style="background-color:#212121; color: white; border: 2px solid white;">
                         <div class="card-image" style="display: flex; justify-content: center; align-items: center; padding: 10px;">
                             <img src="https://i.ibb.co/Pt96PTF/placeholder.jpg" style="width: 100%; height: 100%; object-fit: cover;">
@@ -83,8 +127,8 @@
                         </div>
                     </div>
                 </div>
-            
-            <!-- End of the for Loop-->
+                <!-- End of the for Loop-->
+
             </div>
         </div>
 
@@ -94,31 +138,50 @@
                 width: 20%;
                 margin: 1%;
                 border-radius: 30px;
-                background: #181818;
+                background:  #AB8DA2;
             "
         >
 
             <!-- Put Routine List Here -->
-            <!-- Add Routine Button (Fixed Position) -->
-            <div style="position: sticky; top: 0; background-color: #181818; padding: 10px; z-index: 1; display: flex; justify-content: center;">
-                <button type="button" class="btn btn-primary">Add Routine</button>
+            <div style="padding: 10px;">
+                <div style="padding: 10px;">
+                <select id="routineDropdown" class="form-select" disabled style="color: white;" aria-label="Select Routine">
+                    <option value="" disabled style="color: white;" selected disabled >Select Routine</option>
+                    <!--Create a for loop that goes through and displays each routine for a user-->
+                    <option value="routine1">Routine 1</option>
+                    <option value="routine2">Routine 2</option>
+                    <option value="routine3">Routine 3</option>
+                    <!-- End for Loop -->
+                </select>
             </div>
-            
-            <!-- Vertical Scrollable List of Routine Cards -->
+                    <!--Create a for loop that goes through and displays each routine for a user-->
+                    <option value="routine1">Routine 1</option>
+                    <option value="routine2">Routine 2</option>
+                    <option value="routine3">Routine 3</option>
+                    <!-- End for Loop -->
+                </select>
+            </div>
+        
+            <!-- Vertical Scrollable List of Exercise Cards -->
             <div style="max-height: 400px; overflow-y: auto;">
-                <!-- Example Routine Card (Replace with actual routine data using Jinja) -->
+
+                <!-- For loop that displays each excercise in a routine for a specific user-->
                 <a href="#" class="card-link">
                     <div class="card-content" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border: 2px solid white;">
-                        <span class="card-title" style="color: white;">Routine 1</span>
-                        <div style="display: flex; gap: 10px;">
-                            <button type="button" class="btn btn-warning">Edit</button>
-                            <button type="button" class="btn btn-danger" style="background-color: #FF6347; display: flex; justify-content: center; align-items: center;">
-                                <img src="https://img.icons8.com/ios/50/000000/trash.png" style="width: 15px; height: 15px;" alt="Trash Can Icon">
-                            </button>
-                        </div>
+                        <span class="card-title" style="color: white;">Exercise 1</span>
+                        <button type="button" class="btn btn-danger" style="background-color: #FF6347;">
+                            <img src="https://img.icons8.com/ios/50/000000/trash.png" style="width: 15px; height: 15px;" alt="Trash Can Icon">
+                        </button>
                     </div>
                 </a>
-                <!-- Repeat the above card structure for each routine -->
+                
+                <!--End for loop -->
+            </div>
+            
+        
+            <!-- Sticky Add Routine Button -->
+            <div style="position: sticky; bottom: 0; background-color: #181818; padding: 10px; z-index: 1; display: flex; justify-content: center;">
+                <button type="button" class="btn btn-primary">Add Routine</button>
             </div>
 
 
@@ -128,3 +191,4 @@
     </div>
 
 {% endblock %}
+
