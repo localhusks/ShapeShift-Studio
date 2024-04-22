@@ -17,7 +17,7 @@ from App.controllers import (
     create_exercise,
     get_exercise,
     get_all_exercises_json,
-    get_all_exercises_by_body_part,
+    get_all_exercises_by_difficulty,
     get_all_exercises_by_target_muscle,
     get_all_exercises_by_equipment,
     create_routine,
@@ -86,18 +86,18 @@ class ExerciseUnitTests(unittest.TestCase):
     def test_create_exercise(self):
         exercise = Exercise(
             name="body weight squats",
-            body_area= "lower",
+            difficulty= "lower",
             equip="body weight",
-            muscle = "thighs"
+            target_muscle = "thighs"
         )
         assert exercise.name == "body weight squats"
     
     def test_to_json(self):
         exercise = Exercise(
             name="body weight squats",
-            body_area= "lower",
+            difficulty= "lower",
             equip="body weight",
-            muscle = "thighs"
+            target_muscle = "thighs"
         )
         exercise_json = exercise.to_json()
         self.assertDictEqual(exercise_json,{
@@ -105,7 +105,7 @@ class ExerciseUnitTests(unittest.TestCase):
             'name':"body weight squats",
             'targeted_muscle':"thighs",
             'equipment':"body weight",
-            'body_part':"lower"
+            'difficulty':"lower"
         })
 
 class RoutineUnitTests(unittest.TestCase):
@@ -128,9 +128,9 @@ class RoutineUnitTests(unittest.TestCase):
     def test_add_exercise(self):
         exercise = Exercise(
             name="body weight squats",
-            body_area= "lower",
+            difficulty= "lower",
             equip="body weight",
-            muscle = "thighs"
+            target_muscle = "thighs"
         )
         routine = Routine(
             name = "testing add exercise",
@@ -142,9 +142,9 @@ class RoutineUnitTests(unittest.TestCase):
     def test_remove_exercise(self):
         exercise = Exercise(
             name="body weight squats",
-            body_area= "lower",
+            difficulty= "lower",
             equip="body weight",
-            muscle = "thighs"
+            target_muscle = "thighs"
         )
         routine = Routine(
             name = "testing remove exercise",
@@ -157,9 +157,9 @@ class RoutineUnitTests(unittest.TestCase):
     def test_to_json(self):
         exercise = Exercise(
             name="body weight squats",
-            body_area= "lower",
+            difficulty= "lower",
             equip="body weight",
-            muscle = "thighs"
+            target_muscle = "thighs"
         )
         routine = Routine(
             name = "testing to json",
@@ -170,13 +170,15 @@ class RoutineUnitTests(unittest.TestCase):
         self.assertDictEqual(routine_json,{
             'routine_id': None,
             'user_id': None,
-            'exercises': [{
-                'exercise_id' : None,
-            'name':"body weight squats",
-            'targeted_muscle':"thighs",
-            'equipment':"body weight",
-            'body_part':"lower"
-            }],
+            'exercises': [
+                {
+                    'exercise_id' : None,
+                    'name':"body weight squats",
+                    'targeted_muscle':"thighs",
+                    'difficulty':"lower",
+                    'equipment' : "body weight"
+                }
+            ],
             'custom_name': "testing to json"
         })
 '''
@@ -249,7 +251,7 @@ class ExerciseIntegrationTests(unittest.TestCase):
     def test_create_exercise(self):
         exercise = create_exercise(
             name="body weight squats",
-            bodyPart= "lower",
+            difficulty= "lower",
             equipment="body weight",
             target_muscle = "thighs"
         )
@@ -260,7 +262,7 @@ class ExerciseIntegrationTests(unittest.TestCase):
     def test_get_all_exercises(self):
         exercise_2 = create_exercise(
             name="plank",
-            bodyPart= "waist",
+            difficulty= "waist",
             equipment="body weight",
             target_muscle = "abdominals"
         )
@@ -273,27 +275,27 @@ class ExerciseIntegrationTests(unittest.TestCase):
                     'name':"body weight squats",
                     'targeted_muscle':"thighs",
                     'equipment':"body weight",
-                    'body_part':"lower"
+                    'difficulty':"lower"
                 },
                 {
                     'exercise_id' : 2,
                     'name':"plank",
                     'targeted_muscle':"abdominals",
                     'equipment':"body weight",
-                    'body_part':"waist"
+                    'difficulty':"waist"
                 }
             ],
             exercises_json
         )   
 
     def test_get_exercises_by_body(self):
-        filtered = get_all_exercises_by_body_part("waist")
+        filtered = get_all_exercises_by_difficulty("waist")
         self.assertListEqual(filtered,[{
                     'exercise_id' : 2,
                     'name':"plank",
                     'targeted_muscle':"abdominals",
                     'equipment':"body weight",
-                    'body_part':"waist"
+                    'difficulty':"waist"
                 }
             ]
         )
@@ -304,7 +306,7 @@ class ExerciseIntegrationTests(unittest.TestCase):
                     'name':"body weight squats",
                     'targeted_muscle':"thighs",
                     'equipment':"body weight",
-                    'body_part':"lower"
+                    'difficulty':"lower"
                 }
             ]
         )
@@ -316,14 +318,14 @@ class ExerciseIntegrationTests(unittest.TestCase):
                 'name':"body weight squats",
                 'targeted_muscle':"thighs",
                 'equipment':"body weight",
-                'body_part':"lower"
+                'difficulty':"lower"
             },
             {
                 'exercise_id' : 2,
                 'name':"plank",
                 'targeted_muscle':"abdominals",
                 'equipment':"body weight",
-                'body_part':"waist"
+                'difficulty':"waist"
             }
             ]
         )
@@ -362,7 +364,7 @@ class RoutineIntegrationTests(unittest.TestCase):
         routine = get_routine_by_name("maki's workout")
         exercise = create_exercise(
             name="Barbell Curls",
-            bodyPart= "arms",
+            difficulty= "arms",
             equipment="50kg Barbell",
             target_muscle = "biceps"
         )
@@ -378,7 +380,7 @@ class RoutineIntegrationTests(unittest.TestCase):
         maki_user = get_user_by_username("maki")
         exercise = create_exercise(
             name="Burpees",
-            bodyPart= "core",
+            difficulty= "core",
             equipment="body weight",
             target_muscle = "abdominals"
         )
@@ -402,7 +404,7 @@ class RoutineIntegrationTests(unittest.TestCase):
                     'name' : "Burpees",
                     'targeted_muscle':"abdominals",
                     'equipment':"body weight",
-                    'body_part':"core"
+                    'difficulty':"core"
 
                 }],
                 'custom_name': "cardio"
