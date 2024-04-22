@@ -138,14 +138,22 @@
                 width: 20%;
                 margin: 1%;
                 border-radius: 30px;
-                background: #181818;
+                background:  #AB8DA2;
             "
         >
 
             <!-- Put Routine List Here -->
             <div style="padding: 10px;">
-                <select id="routineDropdown" class="form-select" aria-label="Select Routine">
-                    <option value="" selected disabled>Select Routine</option>
+                <div style="padding: 10px;">
+                <select id="routineDropdown" class="form-select" disabled style="color: white;" aria-label="Select Routine">
+                    <option value="" disabled style="color: white;" selected disabled >Select Routine</option>
+                    <!--Create a for loop that goes through and displays each routine for a user-->
+                    <option value="routine1">Routine 1</option>
+                    <option value="routine2">Routine 2</option>
+                    <option value="routine3">Routine 3</option>
+                    <!-- End for Loop -->
+                </select>
+            </div>
                     <!--Create a for loop that goes through and displays each routine for a user-->
                     <option value="routine1">Routine 1</option>
                     <option value="routine2">Routine 2</option>
