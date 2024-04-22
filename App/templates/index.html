@@ -104,31 +104,33 @@
         >
             
         
-            <!--Buttons for Filtering by body type-->
+            <!--Buttons for Filtering by body type
             <div class="filter-buttons" style="padding: 10px; display: flex; gap: 10px;">
                 <button type="button" onclick="filterExercises('all')" style="background-color: #D56059; font-size: 1rem;">All</button>
                 <button type="button" onclick="filterExercises('upper')" style="background-color: #D56059; font-size: 1rem;">Upper Body</button>
                 <button type="button" onclick="filterExercises('lower')"style="background-color: #D56059; font-size: 1rem;">Lower Body</button>
                 <button type="button" onclick="filterExercises('core')"style="background-color: #D56059; font-size: 1rem;">Core</button>
             </div>
+            -->
         
             <!-- Put Workout List Here -->
             <div class="row" id="exerciseList">
 
+                {% for workout in workouts %}
                 <!-- Create For loop around this for each exercise -->
-                <div class="col s2 m2" data-category="upper">
-                    <div class="card" style="background-color:#212121; color: white; border: 2px solid white;">
-                        <div class="card-image" style="display: flex; justify-content: center; align-items: center; padding: 10px;">
-                            <img src="https://i.ibb.co/Pt96PTF/placeholder.jpg" style="width: 100%; height: 100%; object-fit: cover;">
-                        </div>
-                        <div class="card-content" style="text-align: center; padding: 5px; font-size: 14px;">
-                            <span class="card-title">Exercise Name</span>
-                            <button type="button" class="btn btn-primary">Add</button>
+                    <div class="col s2 m2" data-category="upper">
+                        <div class="card" style="background-color:#212121; color: white;">
+                            <div class="card-image" style="display: flex; justify-content: center; align-items: center; padding: 10px;">
+                                <img src="https://i.ibb.co/Pt96PTF/placeholder.jpg" style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                            <div class="card-content" style="text-align: center; padding: 5px; font-size: 14px;">
+                                <span class="card-title">Exercise Name</span>
+                                <button type="button">Add</button>
+                            </div>
                         </div>
                     </div>
-                </div>
                 <!-- End of the for Loop-->
-
+                {% endfor %}
             </div>
         </div>
 
@@ -138,7 +140,7 @@
                 width: 20%;
                 margin: 1%;
                 border-radius: 30px;
-                background:  #AB8DA2;
+                background:  #181818;
             "
         >
 
@@ -148,9 +150,9 @@
                 <select id="routineDropdown" class="form-select" disabled style="color: white;" aria-label="Select Routine">
                     <option value="" disabled style="color: white;" selected disabled >Select Routine</option>
                     <!--Create a for loop that goes through and displays each routine for a user-->
-                    <option value="routine1">Routine 1</option>
-                    <option value="routine2">Routine 2</option>
-                    <option value="routine3">Routine 3</option>
+                        <option value="routine1">Routine 1</option>
+                        <option value="routine2">Routine 2</option>
+                        <option value="routine3">Routine 3</option>
                     <!-- End for Loop -->
                 </select>
             </div>
@@ -169,7 +171,7 @@
                 <a href="#" class="card-link">
                     <div class="card-content" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border: 2px solid white;">
                         <span class="card-title" style="color: white;">Exercise 1</span>
-                        <button type="button" class="btn btn-danger" style="background-color: #FF6347;">
+                        <button type="button" style="background-color: #FF6347;">
                             <img src="https://img.icons8.com/ios/50/000000/trash.png" style="width: 15px; height: 15px;" alt="Trash Can Icon">
                         </button>
                     </div>
@@ -181,7 +183,7 @@
         
             <!-- Sticky Add Routine Button -->
             <div style="position: sticky; bottom: 0; background-color: #181818; padding: 10px; z-index: 1; display: flex; justify-content: center;">
-                <button type="button" class="btn btn-primary">Add Routine</button>
+                <button type="button">Add Routine</button>
             </div>
 
 
