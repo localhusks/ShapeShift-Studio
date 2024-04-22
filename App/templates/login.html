@@ -193,26 +193,27 @@
 
 {% block content %}
 
-    <div class="login-box">
-        <p>Login</p>
-        <form>
-        <div class="user-box" method="POST" action="/login">
+<div class="login-box">
+    <p>Login</p>
+    <form  method="POST" action="/login">
+        <div class="user-box">
             <input required="" name="" type="text">
-            <label>Usernme</label>
+            <label>Username</label>
         </div>
         <div class="user-box">
             <input required="" name="" type="password">
             <label>Password</label>
         </div>
-        <a href="#">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            Submit
-        </a>
-        </form>
-        <p>Don't have an account? <a href="" class="a2">Sign up!</a></p>
-    </div>
+        <div>
+            <div>
+                <input type="submit" class="blue text-white btn" value="Login">
+            </div>
+            <div>
+                <a href="/signup" class="a2">signup Here!</a>
+            </div>
+        </div>
+    </form>
+    <!-- <p>Have an account? <a href="/login" class="a2">Login Here!</a></p> -->
+</div>
 
 {% endblock %}
