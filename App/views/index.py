@@ -7,8 +7,22 @@ import requests
 
 index_views = Blueprint('index_views', __name__, template_folder='../templates')
 
-@index_views.route('/', methods=['GET'])
+def extract_elements(data):
+    keys_to_extract = ['bodyPart', 'equipment', 'name', 'target']
+    extracted_elements = [{key: exercise[key] for key in keys_to_extract} for exercise in data]
+    return extracted_elements
+
+@index_views.route('/app', methods=['GET'])
 def index_page():
+    return render_template('index.html')
+
+
+
+@index_views.route('/init', methods=['GET'])
+def init():
+    db.drop_all()
+    db.create_all()
+    create_user('bob', 'bobpass')
     base_url = "https://exercisedb.p.rapidapi.com/exercises/bodyPart/"
     body_parts = [
         "back", "cardio", "chest", "lower arms", "lower legs",
@@ -23,21 +37,16 @@ def index_page():
 
     for part in body_parts:
         url = base_url + part
-        querystring = {"limit": "20"}
         response = requests.get(url, headers=headers, params=querystring)
-        
-
-
-
-
-    return render_template('index.html')
-
-@index_views.route('/init', methods=['GET'])
-def init():
-    db.drop_all()
-    db.create_all()
-    create_user('bob', 'bobpass')
-
+        exercises_data = response.json()
+        extracted_data = extract_elements(exercises_data)
+        for exercise in extracted_data:
+            create_exercise(
+                name=exercise['name'],
+                target_muscle= exercise['target'], 
+                bodyPart=exercise['bodyPart'], 
+                equipment=exercise['equipment']
+                )
     return jsonify(message='db initialized!')
 
 @index_views.route('/health', methods=['GET'])
