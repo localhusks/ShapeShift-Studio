@@ -123,10 +123,10 @@
                         </div>
                         <div class="card-content" style="text-align: center; padding: 5px; font-size: 14px;">
                             <span class="card-title">{{exer.name}}</span>
-                            
-                            <button type="button" class="btn btn-primary">
-                                <a href="{{ url_for('add_to_routine', item_id=item.id) }}">Add</a>
-                            </button>
+                            <form name="add_exercise" action="/routine/{{ exer.exercise_id | int }}" method="POST">
+
+                                <input id="captureBtn" type="submit" value="ADD" />
+                            </form>
                         </div>
                     </div>
                 </div>

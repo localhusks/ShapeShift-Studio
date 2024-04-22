@@ -76,7 +76,7 @@ def health_check():
 @jwt_required()
 def add_exercise(exercise_id):
     exercise = get_exercise(exercise_id)
-    routine = get_routine_by_name("bob's routine")
+    routine = get_routine_by_name("bob's workout")
     add_exercise_to_routine(
             exercise_id=exercise.exercise_id,
             routine_id=routine.routine_id
