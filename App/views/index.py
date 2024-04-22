@@ -1,11 +1,13 @@
 from urllib import response
 from flask import Blueprint, render_template, jsonify, request, flash, send_from_directory, flash, redirect, url_for
+from App.controllers.routine import create_routine
 from App.models import db
-from App.controllers import create_user,get_all_exercises
+from App.controllers import create_user,get_all_exercises,get_routine,get_routine_by_name,add_exercise_to_routine
 from App.controllers.exercise import (create_exercise,get_exercise)
 import requests
 import json
-from App.models import exercise
+
+
 from App.models import User
 index_views = Blueprint('index_views', __name__, template_folder='../templates')
 from flask_jwt_extended import (
@@ -37,7 +39,8 @@ def index_page():
 def init():
     db.drop_all()
     db.create_all()
-    create_user('bob', 'bobpass')
+    user = create_user('bob', 'bobpass')
+    create_routine("bob's workout",user.id)
     base_url = "https://api.api-ninjas.com/v1/exercises"
     headers={'X-Api-Key': 'p7qwwiLPwaRqMsHglv/zOA==IHNYDMBP2qd3rItm'}
     
@@ -73,7 +76,12 @@ def health_check():
 @jwt_required()
 def add_exercise(exercise_id):
     exercise = get_exercise(exercise_id)
-    current_user.add_routine(exercise)
+    routine = get_routine_by_name("bob's workout")
+    add_exercise_to_routine(
+            exercise_id=exercise.exercise_id,
+            routine_id=routine.routine_id
+        )
+    
     flash(f"Exercise added!")
     return redirect(request.referrer)
 
