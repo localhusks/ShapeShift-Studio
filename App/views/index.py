@@ -1,10 +1,12 @@
 from urllib import response
-from flask import Blueprint, redirect, render_template, request, send_from_directory, jsonify
+from flask import Blueprint, render_template, jsonify, request, flash, send_from_directory, flash, redirect, url_for
 from App.models import db
-from App.controllers import create_user
-from App.controllers.exercise import (create_exercise)
+from App.controllers import create_user,get_all_exercises
+from App.controllers.exercise import (create_exercise,get_exercise)
 import requests
 import json
+from App.models import exercise
+from App.models import User
 index_views = Blueprint('index_views', __name__, template_folder='../templates')
 from flask_jwt_extended import (
     JWTManager,
@@ -14,6 +16,7 @@ from flask_jwt_extended import (
     unset_jwt_cookies,
     current_user
 )
+
 def extract_elements(data):
     keys_to_extract = ['difficulty', 'equipment', 'name', 'target']
     extracted_elements = [{key: exercise[key] for key in keys_to_extract} for exercise in data]
@@ -22,7 +25,11 @@ def extract_elements(data):
 @index_views.route('/app', methods=['GET'])
 @jwt_required()
 def index_page():
-    return render_template('index.html')
+    exes = get_all_exercises()
+    return render_template(
+        'index.html',
+        exercises = exes
+    )
 
 
 
@@ -61,4 +68,12 @@ def init():
 def health_check():
     return jsonify({'status':'healthy'})
 
+
+@index_views.route("/routine/<int:exercise_id>", methods=['POST'])
+@jwt_required()
+def add_exercise(exercise_id):
+    exercise = get_exercise(exercise_id)
+    current_user.add_routine(exercise)
+    flash(f"Exercise added!")
+    return redirect(request.referrer)
 
