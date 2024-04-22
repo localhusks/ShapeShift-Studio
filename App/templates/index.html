@@ -105,16 +105,16 @@
             
         
             <!--Buttons for Filtering by body type-->
-            <div class="filter-buttons" style="padding: 10px; display: flex; gap: 10px;">
+            <!-- <div class="filter-buttons" style="padding: 10px; display: flex; gap: 10px;">
                 <button type="button" onclick="filterExercises('all')" style="background-color: #D56059; font-size: 1rem;">All</button>
                 <button type="button" onclick="filterExercises('upper')" style="background-color: #D56059; font-size: 1rem;">Upper Body</button>
                 <button type="button" onclick="filterExercises('lower')"style="background-color: #D56059; font-size: 1rem;">Lower Body</button>
                 <button type="button" onclick="filterExercises('core')"style="background-color: #D56059; font-size: 1rem;">Core</button>
-            </div>
+            </div> -->
         
             <!-- Put Workout List Here -->
             <div class="row" id="exerciseList">
-
+                {% for exer in exercises %}
                 <!-- Create For loop around this for each exercise -->
                 <div class="col s2 m2" data-category="upper">
                     <div class="card" style="background-color:#212121; color: white; border: 2px solid white;">
@@ -122,11 +122,15 @@
                             <img src="https://i.ibb.co/Pt96PTF/placeholder.jpg" style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
                         <div class="card-content" style="text-align: center; padding: 5px; font-size: 14px;">
-                            <span class="card-title">Exercise Name</span>
-                            <button type="button" class="btn btn-primary">Add</button>
+                            <span class="card-title">{{exer.name}}</span>
+                            
+                            <button type="button" class="btn btn-primary">
+                                <a href="{{ url_for('add_to_routine', item_id=item.id) }}">Add</a>
+                            </button>
                         </div>
                     </div>
                 </div>
+                {% endfor %}
                 <!-- End of the for Loop-->
 
             </div>
