@@ -40,4 +40,4 @@ class User(db.Model):
         self.routines.remove(routine)
 
     def __repr__(self):
-        return f"<User: {self.id},{self.username},{self.routines}>"
+        return f"<User: {self.id},{self.username},routines:{self.routines}>"

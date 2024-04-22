@@ -6,13 +6,21 @@ from App.controllers.exercise import (create_exercise)
 import requests
 
 index_views = Blueprint('index_views', __name__, template_folder='../templates')
-
+from flask_jwt_extended import (
+    JWTManager,
+    create_access_token,
+    jwt_required,
+    set_access_cookies,
+    unset_jwt_cookies,
+    current_user
+)
 def extract_elements(data):
     keys_to_extract = ['bodyPart', 'equipment', 'name', 'target']
     extracted_elements = [{key: exercise[key] for key in keys_to_extract} for exercise in data]
     return extracted_elements
 
 @index_views.route('/app', methods=['GET'])
+@jwt_required()
 def index_page():
     return render_template('index.html')
 

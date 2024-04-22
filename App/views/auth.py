@@ -2,9 +2,8 @@ from flask import Blueprint, render_template, jsonify, request, flash, send_from
 from flask_jwt_extended import jwt_required, current_user, unset_jwt_cookies, set_access_cookies
 from sqlalchemy.exc import IntegrityError
 from.index import index_views
-
+from App.controllers import login
 from App.controllers import (
-    login,
     create_user
 )
 from flask_jwt_extended import (
@@ -38,15 +37,14 @@ def signup_page():
 @auth_views.route('/login', methods=['POST'])
 def login_action():
     data = request.form
-    print(data)
     token = login(data['username'], data['password'])
-    response = redirect(request.referrer)
-    if not token:
-        flash('Bad username or password given'), 401
-    else:
-        flash('Login Successful')
-        set_access_cookies(response, token) 
-    return response
+    if token:
+        flash(f"User {data['username']} logged in successfully")
+        response = redirect(url_for('index_views.index_page'))
+        set_access_cookies(response,token)
+        return response
+    flash("Invalid Username or Password")
+    return redirect(url_for('login_page'))
 
 @auth_views.route('/logout', methods=['GET'])
 def logout_action():
@@ -59,6 +57,7 @@ def logout_action():
 def signup_action():
     response = None
     try:
+        data = request.form
         username = request.form['username']
         password = request.form['password']
         user = create_user(
@@ -71,6 +70,11 @@ def signup_action():
         set_access_cookies(response, token)
     except IntegrityError:
         flash('Username already exists')
-        response = redirect()
-    flash('Account created')
+        response = redirect(url_for('signup_page'))
     return response
+
+
+# @auth_views.route('/app', methods=['GET'])
+# @jwt_required()
+# def home_page():
+#     return render_template('index.html')
